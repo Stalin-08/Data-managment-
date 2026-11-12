@@ -1,0 +1,111 @@
+
+PROJECT: Real-Time Cryptocurrency Anomaly Detection Using Apache Kafka
+
+AI TOOL USED: ChatGPT
+
+PURPOSE:
+ChatGPT was used as an AI-assisted development and debugging tool during the implementation of this academic project.
+
+--------------------------------------------------
+1. PROJECT DESIGN AND ARCHITECTURE
+--------------------------------------------------
+
+Prompt summary:
+Help me design a real-time cryptocurrency anomaly detection project using Apache Kafka, Python, Binance WebSocket data, SQLite and Streamlit.
+
+Purpose:
+Understand the system architecture, components and data flow.
+
+--------------------------------------------------
+2. KAFKA PRODUCER IMPLEMENTATION
+--------------------------------------------------
+
+Prompt summary:
+Help me implement a Python Kafka producer that collects live BTCUSDT and ETHUSDT trade data from Binance WebSocket streams and publishes the events to the crypto-trades Kafka topic.
+
+Purpose:
+Implement real-time market data ingestion.
+
+--------------------------------------------------
+3. KAFKA CONSUMER IMPLEMENTATION
+--------------------------------------------------
+
+Prompt summary:
+Help me implement a Kafka consumer using confluent-kafka to receive cryptocurrency trade messages and process them using Python.
+
+Purpose:
+Implement real-time event consumption.
+
+--------------------------------------------------
+4. ANOMALY DETECTION
+--------------------------------------------------
+
+Prompt summary:
+Help me implement a cryptocurrency anomaly detection algorithm using rolling historical observations, percentage price changes, log-transformed trading volume and Z-score analysis.
+
+Purpose:
+Identify unusual price movements and trading volumes.
+
+--------------------------------------------------
+5. DATABASE INTEGRATION
+--------------------------------------------------
+
+Prompt summary:
+Help me integrate SQLite with the Kafka consumer to store cryptocurrency trades and detected anomalies.
+
+Purpose:
+Persist trade records and anomaly alerts.
+
+--------------------------------------------------
+6. STREAMLIT DASHBOARD
+--------------------------------------------------
+
+Prompt summary:
+Help me develop a Streamlit dashboard to visualize live cryptocurrency trades, market activity, anomaly alerts and recent trading records.
+
+Purpose:
+Provide real-time monitoring and visualization.
+
+--------------------------------------------------
+7. PERFORMANCE MONITORING
+--------------------------------------------------
+
+Prompt summary:
+Help me implement performance monitoring for the Kafka streaming application, including throughput, average latency, P95 latency, P99 latency and processing time.
+
+Purpose:
+Evaluate system performance.
+
+--------------------------------------------------
+8. DEBUGGING AND TROUBLESHOOTING
+--------------------------------------------------
+
+Prompt summary:
+Help me troubleshoot Python, Docker, Kafka, SQLite, WebSocket connectivity, partition assignment and consumer processing issues.
+
+Purpose:
+Resolve implementation and configuration problems.
+
+--------------------------------------------------
+9. AUTOMATED TESTING
+--------------------------------------------------
+
+Prompt summary:
+Help me write Pytest test cases for normal trade processing, invalid trade values, insufficient historical data and unusual price movement detection.
+
+Purpose:
+Validate anomaly detection functionality.
+
+--------------------------------------------------
+10. DOCUMENTATION AND GITHUB
+--------------------------------------------------
+
+Prompt summary:
+Help me prepare project documentation, README instructions, Git configuration, .gitignore rules and GitHub repository submission.
+
+Purpose:
+Prepare the project for academic submission.
+
+--------------------------------------------------
+END OF PROMPT LOG
+--------------------------------------------------
