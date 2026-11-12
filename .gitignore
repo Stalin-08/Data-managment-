@@ -7,3 +7,6 @@ __pycache__/
 *.log
 .DS_Store
 database/*.db
+
+database/*.db-*
+database/db_backup.py

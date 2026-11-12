@@ -55,9 +55,13 @@ def init_db():
         conn.commit()
 
 
-def save_trade(trade, result):
+def save_trade(trade, result, connection=None):
 
-    with get_connection() as conn:
+    # Reuse the supplied connection when available.
+    owns_connection = connection is None
+    conn = connection if connection is not None else get_connection()
+
+    try:
 
         conn.execute("""
             INSERT INTO trades (
@@ -101,7 +105,19 @@ def save_trade(trade, result):
                 json.dumps(result["reasons"])
             ))
 
+        # Commit every trade individually.
         conn.commit()
+
+    except Exception:
+
+        conn.rollback()
+        raise
+
+    finally:
+
+        # Close only connections created by this function.
+        if owns_connection:
+            conn.close()
 
 
 def get_statistics():

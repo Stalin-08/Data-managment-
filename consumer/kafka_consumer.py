@@ -6,10 +6,11 @@ import csv
 from pathlib import Path
 from collections import deque
 from datetime import datetime, timezone
+
 from confluent_kafka import Consumer, KafkaException
 
 from detection.anomaly_detector import CryptoAnomalyDetector
-from database.db import init_db, save_trade
+from database.db import init_db, get_connection, save_trade
 
 
 # ==========================================
@@ -169,23 +170,33 @@ def main():
 
     global total_messages, anomaly_count
 
-    init_db()
-
-    consumer.subscribe([KAFKA_TOPIC])
-
-    logging.info("CRYPTO ANOMALY DETECTION STARTED")
-    logging.info("Kafka broker: %s", KAFKA_BROKER)
-    logging.info("Kafka topic: %s", KAFKA_TOPIC)
-    logging.info("Database initialized")
-    logging.info("Metrics file: %s", METRICS_FILE)
-
-    start_time = time.monotonic()
-    interval_start = start_time
-    interval_count = 0
-
-    file_exists = METRICS_FILE.exists() and METRICS_FILE.stat().st_size > 0
+    db_connection = None
 
     try:
+
+        # Initialize database tables
+        init_db()
+
+        # Create one persistent database connection
+        db_connection = get_connection()
+
+        consumer.subscribe([KAFKA_TOPIC])
+
+        logging.info("CRYPTO ANOMALY DETECTION STARTED")
+        logging.info("Kafka broker: %s", KAFKA_BROKER)
+        logging.info("Kafka topic: %s", KAFKA_TOPIC)
+        logging.info("Database initialized")
+        logging.info("Persistent SQLite connection established")
+        logging.info("Metrics file: %s", METRICS_FILE)
+
+        start_time = time.monotonic()
+        interval_start = start_time
+        interval_count = 0
+
+        file_exists = (
+            METRICS_FILE.exists()
+            and METRICS_FILE.stat().st_size > 0
+        )
 
         with open(
             METRICS_FILE,
@@ -264,8 +275,12 @@ def main():
                     # Run anomaly detection
                     result = detector.process_trade(trade)
 
-                    # Save trade to SQLite
-                    save_trade(trade, result)
+                    # Save using the persistent database connection
+                    save_trade(
+                        trade,
+                        result,
+                        connection=db_connection
+                    )
 
                     processing_end = time.perf_counter_ns()
 
@@ -326,11 +341,16 @@ def main():
 
     finally:
 
+        # Close Kafka consumer
         consumer.close()
 
+        # Close persistent database connection
+        if db_connection is not None:
+            db_connection.close()
+            logging.info("SQLite connection closed")
+
         logging.info(
-            "FINAL SUMMARY | Total messages: %s | "
-            "Anomalies: %s",
+            "FINAL SUMMARY | Total messages: %s | Anomalies: %s",
             total_messages,
             anomaly_count
         )
